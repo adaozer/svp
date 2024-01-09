@@ -37,8 +37,45 @@ def gram_schmidt(A):
         for hat in hats:
             result = vector_subtraction(result, hat)
         orthogonal_basis.append(result)
-    for i in range(len(orthogonal_basis)):
-        orthogonal_basis[i] = scalar_multiply(orthogonal_basis[i], 1/norm(orthogonal_basis[i]))
+    #for i in range(len(orthogonal_basis)):
+        #orthogonal_basis[i] = scalar_multiply(orthogonal_basis[i], 1/norm(orthogonal_basis[i]))
     return orthogonal_basis
 
-print("GRAM SCHMIDT: ", gram_schmidt(([1,2,3],[4,5,6],[7,8,9])))
+def LLL(A, S=3/4):
+    B = gram_schmidt(A)
+    n = len(B)
+
+    mu = [0 for i in range(n)]
+    mu = [mu for n in range(n)]
+
+    for i in range(n):
+        for j in range(len(mu[i])-1):
+            mu[i][j] = inner_product(A[i], B[j])/inner_product(B[j], B[j])
+
+    k = 1
+    while k < n:
+        for j in range(k-1, -1, -1):
+            if abs(mu[k][j]) > 1/2:
+                tempp = scalar_multiply(A[j], mu[k][j])
+                A[k] = vector_subtraction(A[k], tempp)
+                B = gram_schmidt(A)
+                for i in range(k+1):
+                    for p in range(len(mu[i])-1):
+                        mu[i][p] = inner_product(A[i], B[p])/inner_product(B[p], B[p])
+        if inner_product(B[k], B[k]) > (S-((mu[k][k-1]))**2)* inner_product(B[k-1], B[k-1]):
+            k += 1
+        else:
+            temp = A[k]
+            A[k] = A[k-1]
+            A[k-1] = temp
+            B = gram_schmidt(A)
+            for i in range(k+1):
+                for g in range(len(mu[i])-1):
+                    mu[i][g] = inner_product(A[i], B[g])/inner_product(B[g], B[g])
+            k = max(k-1, 1)
+
+
+    return A
+
+deneme = [[1,1,1], [-1,0,2], [3,5,6]]
+print(LLL(deneme))
