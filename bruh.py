@@ -75,5 +75,8 @@ def LLL(A, S=3/4):
 
     return A
 
+def schnorr(A, r):
+    gram_schmidt()
+
 deneme2 = [[1,1,1], [-1,0,2], [3,5,6]]
 print(LLL(deneme2))
