@@ -75,8 +75,54 @@ def LLL(A, S=3/4):
 
     return A
 
-def schnorr(A, r):
-    gram_schmidt()
+def svp(A, r):
+    A_lll = LLL(A)
+    n = len(A_lll)
+    mu = [[0 for i in range(n)] for i in range(n)]
+    B = gram_schmidt(A_lll)
+    for i in range(n):
+        for j in range(len(mu[i])-1):
+            mu[i][j] = inner_product(A_lll[i], B[j])/inner_product(B[j], B[j])
+    
+    B_inner = []
+    for i in B:
+        B_inner.append(inner_product(i,i))
+  
+    p = [0] * (n+1)
+    v = [0] * n
+    c = [0] * n
+    w = [0] * n
+    v[0] = 1
+    k = 0
+    r_square = r**2
+    last_nonzero = 0
 
-deneme2 = [[1,1,1], [-1,0,2], [3,5,6]]
-print(LLL(deneme2))
+    while True:
+        p[k] = p[k+1] + (v[k] - c[k])**2 * B_inner[k]
+        if p[k] <= r_square:
+            if k == 0:
+                r_square = p[k]
+                s = [sum(v[i-1] * A_lll[i - 1][j] for i in range(1, n + 1)) for j in range(len(A_lll[0]))]
+            else:
+                k -= 1
+                c[k] = -sum(mu[i][k] * v[i] for i in range(k + 1, n))
+                v[k] = round(c[k])
+                w[k] = 1
+        else:
+            k += 1
+            if k == n:
+                return s
+
+            if k >= last_nonzero:
+                last_nonzero = k
+                v[k] += 1
+
+            else:
+                if v[k] > c[k]:
+                    v[k] -= w[k]
+                else:
+                    v[k] += w[k] 
+                w[k] += 1
+
+
+print(svp([[3,4], [-4,3]], 6))
