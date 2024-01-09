@@ -45,8 +45,7 @@ def LLL(A, S=3/4):
     B = gram_schmidt(A)
     n = len(B)
 
-    mu = [0 for i in range(n)]
-    mu = [mu for n in range(n)]
+    mu = [[0 for i in range(n)] for i in range(n)]
 
     for i in range(n):
         for j in range(len(mu[i])-1):
@@ -56,7 +55,7 @@ def LLL(A, S=3/4):
     while k < n:
         for j in range(k-1, -1, -1):
             if abs(mu[k][j]) > 1/2:
-                tempp = scalar_multiply(A[j], mu[k][j])
+                tempp = scalar_multiply(A[j], round(mu[k][j]))
                 A[k] = vector_subtraction(A[k], tempp)
                 B = gram_schmidt(A)
                 for i in range(k+1):
@@ -74,8 +73,7 @@ def LLL(A, S=3/4):
                     mu[i][g] = inner_product(A[i], B[g])/inner_product(B[g], B[g])
             k = max(k-1, 1)
 
-
     return A
 
-deneme = [[1,1,1], [-1,0,2], [3,5,6]]
-print(LLL(deneme))
+deneme2 = [[1,1,1], [-1,0,2], [3,5,6]]
+print(LLL(deneme2))
