@@ -12,15 +12,9 @@ def scalar_multiply(u, scalar):
 
 def vector_subtraction(u, v):
     result_2 = []
-    for i in range(len(u)):
+    for i in range(len(u)): 
         result_2.append(u[i]-v[i])
     return result_2
-
-def norm(u):
-    counter_2 = 0
-    for i in u:
-        counter_2 += i**2
-    return counter_2**(1/2)
 
 def gram_schmidt(A):
     orthogonal_basis = [A[0]]
@@ -37,9 +31,13 @@ def gram_schmidt(A):
         for hat in hats:
             result = vector_subtraction(result, hat)
         orthogonal_basis.append(result)
-    #for i in range(len(orthogonal_basis)):
-        #orthogonal_basis[i] = scalar_multiply(orthogonal_basis[i], 1/norm(orthogonal_basis[i]))
     return orthogonal_basis
+
+def vector_add(u, v):
+    result = []
+    for i in range(len(u)):
+        result.append(u[i]+v[i])
+    return result
 
 def LLL(A, S=3/4):
     B = gram_schmidt(A)
@@ -96,16 +94,20 @@ def svp(A, r):
     k = 0
     r_square = r**2
     last_nonzero = 0
-
+    
     while True:
         p[k] = p[k+1] + (v[k] - c[k])**2 * B_inner[k]
         if p[k] <= r_square:
             if k == 0:
                 r_square = p[k]
-                s = [sum(v[i-1] * A_lll[i - 1][j] for i in range(1, n + 1)) for j in range(len(A_lll[0]))]
+                s = scalar_multiply(A_lll[0], v[0])
+                for i in range(1,n):
+                    s = vector_add(scalar_multiply(A_lll[i], v[i]), s)
+
             else:
                 k -= 1
-                c[k] = -sum(mu[i][k] * v[i] for i in range(k + 1, n))
+                for i in range(k+1,n):
+                    c[k] = vector_add(scalar_multiply(mu[i][k], v[i]), c[k])
                 v[k] = round(c[k])
                 w[k] = 1
         else:
@@ -125,4 +127,68 @@ def svp(A, r):
                 w[k] += 1
 
 
-print(svp([[3,4], [-4,3]], 6))
+
+def svp_A(A, r):
+    A_lll = LLL(A)
+    n = len(A_lll)
+    mu = [[0 for _ in range(n)] for _ in range(n)]
+    B = gram_schmidt(A_lll)
+    
+    for i in range(n):
+        for j in range(i):
+            mu[i][j] = inner_product(A_lll[i], B[j]) / inner_product(B[j], B[j])
+    
+    B_inner = [inner_product(b, b) for b in B]
+
+    p = [0] * (n + 1)
+    v = [0] * n
+    v[0] = 1
+    c = [0] * n
+    w = [0] * n
+    k = 0
+    r_square = r**2
+    last_nonzero = 0
+    s = None
+
+    while True:
+        p[k] = p[k + 1] + (v[k] - c[k])**2 * B_inner[k]
+        if p[k] <= r_square:
+            if k == 0:
+                r_square = p[k]
+                s = [0] * len(A_lll[0])
+                for i in range(n):
+                    s = vector_add(s, scalar_multiply(A_lll[i], v[i]))
+                return s  # Exit when the shortest vector is found
+
+            else:
+                k -= 1
+                c[k] = 0  # Reset c[k] for the current level
+                for i in range(k + 1, n):
+                    c[k] -= mu[i][k] * v[i]
+                v[k] = round(c[k])
+                w[k] = 1
+        else:
+            k += 1
+            if k == n:
+                if s is not None:
+                    return s  # Return the found shortest vector
+                k -= 1  # Step back if no vector found
+
+            if k > last_nonzero:
+                last_nonzero = k
+                v[k] = 1
+            else:
+                if v[k] > c[k]:
+                    v[k] -= w[k]
+                else:
+                    v[k] += w[k]
+                w[k] += 1
+
+B = [[-2, 3, 5, 7, 11, 13, 17], [3, -5, 7, 11, 13, 17, 19], [5, 7, -11, 13, 17, 19, 23], [7, 11, 13, -17, 19, 23, 29], [11, 13, 17, 19, -23, 29, 31], [13, 17, 19, 23, 29, -31, 37], [17, 19, 23, 29, 31, 37, -41]]
+R = 50
+
+
+
+
+# Example usage
+print("Shortest Vector in B2:", svp_A(B, R))
