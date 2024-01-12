@@ -151,18 +151,6 @@ def Matrix_X_Number(matrix,number):
 
 
 
-B4 = [[1, 2, 3, 4],
-      [2, 3, 4, 5],
-      [3, 4, 5, 6],
-      [4, 5, 6, 7]]
-Basis=LLL_Reduction(B4)
-#print('Basis',Basis)
-R=dot_product(B4[0], B4[0])
-n=len(B4)
-print("Norm=", R**0.5, ", Vector=", B4[0])
-v=Schnorr_Euchner_Enumeration(B4, n, R)                              
-print("end")
-
-
+print(LLL_Reduction([[3,1,1], [-1,2,4],[2,0,3]]))
 
     
