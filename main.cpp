@@ -1,10 +1,5 @@
 #include <iostream>
-#include <vector>
-#include "pre_process.h"
-
-using namespace std;
-using Vector = vector<double>;
-using Basis = vector<Vector>;
+#include "svp.h"
 
 void print_vector(Vector v) {
     for (int i = 0; i < v.size(); ++i) {
@@ -23,11 +18,9 @@ void print_matrix(Basis mat){
 }
 
 int main(){
-    Vector u = {1,2,3};
-    Basis v = {{1, 1}, {1, 0}};
-    Basis g = {{1, 2, 2}, {2, -1, 1}, {3, 0, 1}};
-    Basis c = {{3, 1, 1}, {-1, 2, 4}, {2, 0, 3}};
-    Basis deneme = {{201, 37}, {1648,297}};
-    print_matrix(LLL(g, 0.75));
+    Basis A = {{2,2,1},{4,3,1}};
+    Basis pre_process = LLL(A, 0.75);
+    print_matrix(pre_process);
+    //print_matrix(schnorr_euchner(pre_process, 10));
     return 0;
 }

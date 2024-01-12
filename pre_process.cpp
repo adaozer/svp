@@ -1,11 +1,4 @@
-#include <vector>
-#include <cmath>
 #include "pre_process.h"
-#include "vector_functions.h"
-
-using namespace std;
-using Vector = vector<double>;
-using Basis = vector<Vector>;
 
 Basis gram_schmidt(const Basis A){
     Basis B;
@@ -32,7 +25,7 @@ Basis gram_schmidt(const Basis A){
     return B;
 }
 
-Basis LLL(Basis A, const double S=0.75) {
+Basis LLL(Basis A, const double S) {
     Basis B = gram_schmidt(A);
     int n = B.size();
     Basis mu(n, Vector(n,0)); // Bu ne aw

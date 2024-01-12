@@ -262,4 +262,4 @@ def gram_schmidt_A(A, normalize_vectors=True):
     
     return orthogonal_basis
 
-print(LLL([[1,2,2], [2,-1,1],[3,0,1]]))
+print(LLL([[2,2,1], [4,3,1]]))

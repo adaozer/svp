@@ -1,8 +1,4 @@
-#include <vector>
 #include "vector_functions.h"
-
-using namespace std;
-using Vector = vector<double>;
 
 double inner_product(const Vector u, const Vector v){
 

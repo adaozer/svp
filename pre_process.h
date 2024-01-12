@@ -1,5 +1,6 @@
-using namespace std;
-using Vector = vector<double>;
+#include <cmath> // Eğer bunu svpde kullanmazsam (ki sanmıyorum) o zaman kaldırılıp pre_process.cpp'ye taşınacak.
+#include "vector_functions.h"
+
 using Basis = vector<Vector>;
 
 Basis gram_schmidt(const Basis A);
