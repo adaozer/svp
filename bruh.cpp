@@ -82,13 +82,12 @@ Basis gram_schmidt(const Basis A){
     return B;
 }
 
-Basis LLL(Basis As, double S=0.75) {
-    Basis A = As; // Buraya sonra kesin bak
+Basis LLL(Basis A, const double S=0.75) {
     Basis B = gram_schmidt(A);
     int n = B.size();
     Basis mu(n, Vector(n,0)); // Bu ne aw
     for (int i = 0; i < n; ++i){
-        for (int j = 0; j <= i; ++j) { // Buraya sonra bi bak
+        for (int j = 0; j < mu[i].size(); ++j) {
             mu[i][j] = inner_product(A[i], B[j])/inner_product(B[j], B[j]);
         }
     }
@@ -100,8 +99,8 @@ Basis LLL(Basis As, double S=0.75) {
                 Vector tempp = scalar_multiply(A[j], round(mu[k][j]));
                 A[k] = vector_subtraction(A[k], tempp);
                 B = gram_schmidt(A);
-                for (int i = 0; i < k+1; ++i) {
-                    for (int p = 0; p <= i; ++p) {
+                for (int i = 0; i < n; ++i) {
+                    for (int p = 0; p < mu[i].size(); ++p) {
                         mu[i][p] = inner_product(A[i], B[p])/inner_product(B[p],B[p]);
                     }
                 
@@ -115,8 +114,8 @@ Basis LLL(Basis As, double S=0.75) {
         else {
             swap(A[k], A[k-1]);
             B = gram_schmidt(A);
-            for (int i = 0; i < k+1; ++i) {
-                for (int g = 0; g <= i; ++g) {
+            for (int i = 0; i < n; ++i) {
+                for (int g = 0; g < mu[i].size(); ++g) {
                     mu[i][g] = inner_product(A[i], B[g])/inner_product(B[g], B[g]);
                 }
             }
@@ -132,10 +131,7 @@ int main(){
     Basis g = {{1, 2, 2}, {2, -1, 1}, {3, 0, 1}};
     Basis c = {{3, 1, 1}, {-1, 2, 4}, {2, 0, 3}};
     Basis deneme = {{201, 37}, {1648,297}};
-    print_matrix(LLL(deneme));
-    print_matrix(LLL(v));
     print_matrix(LLL(g));
-    print_matrix(LLL(c));
     return 0;
 }
 
