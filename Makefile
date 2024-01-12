@@ -9,3 +9,6 @@ pre_process.o: pre_process.cpp pre_process.h
 
 vector_functions.o: vector_functions.cpp vector_functions.h
 		g++ -c vector_functions.cpp
+
+clean: 
+		rm -rf runme svp.o pre_process.o vector_functions.o
