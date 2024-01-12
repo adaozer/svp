@@ -1,4 +1,4 @@
-o#include <vector>
+#include <vector>
 #include "vector_functions.h"
 
 using namespace std;
