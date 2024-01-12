@@ -64,7 +64,7 @@ def LLL(Basis, S=3/4):
                 tempp = scalar_multiply(Basis[j], round(mu[k][j]))
                 Basis[k] = vector_subtraction(Basis[k], tempp)
                 orthobasis = gram_schmidt(Basis)
-                for i in range(j+1):
+                for i in range(n):
                     for p in range(len(mu[i])-1):
                         mu[i][p] = inner_product(Basis[i], orthobasis[p])/inner_product(orthobasis[p], orthobasis[p])
         if inner_product(orthobasis[k], orthobasis[k]) > (S-((mu[k][k-1]))**2)* inner_product(orthobasis[k-1], orthobasis[k-1]):
@@ -74,11 +74,9 @@ def LLL(Basis, S=3/4):
             Basis[k] = Basis[k-1]
             Basis[k-1] = temp
             orthobasis = gram_schmidt(Basis)
-            mu = [[0 for _ in range(n)] for _ in range(n)]
             for i in range(n):
-                mu[i][i] = 1
-                for j in range(i):
-                    mu[i][j] = inner_product(Basis[i], orthobasis[j]) / inner_product(orthobasis[j], orthobasis[j])
+                    for z in range(len(mu[i])-1):
+                        mu[i][z] = inner_product(Basis[i], orthobasis[z])/inner_product(orthobasis[z], orthobasis[z])
             k = max(k-1, 1)
 
     return Basis
