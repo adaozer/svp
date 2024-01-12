@@ -151,6 +151,6 @@ def Matrix_X_Number(matrix,number):
 
 
 
-print(LLL_Reduction([[3,1,1], [-1,2,4],[2,0,3]]))
+print(LLL_Reduction([[1,2,2], [2,-1,1],[3,0,1]]))
 
     

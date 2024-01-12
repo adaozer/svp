@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <cstdlib>
+
 using namespace std;
 using Vector = vector<double>;
 using Basis = vector<Vector>;

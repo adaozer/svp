@@ -45,39 +45,43 @@ def vector_add(u, v):
         result.append(u[i]+v[i])
     return result
 
-def LLL(A, S=3/4):
-    B = gram_schmidt(A)
-    n = len(B)
+def LLL(Basis, S=3/4):
+    n = len(Basis)
+    orthobasis = gram_schmidt(Basis)
 
-    mu = [[0 for i in range(n)] for i in range(n)]
+
+    mu = [[0 for _ in range(n)] for _ in range(n)]
 
     for i in range(n):
-        for j in range(len(mu[i])-1):
-            mu[i][j] = inner_product(A[i], B[j])/inner_product(B[j], B[j])
+        mu[i][i] = 1
+        for j in range(i):
+            mu[i][j] = inner_product(Basis[i], orthobasis[j])/inner_product(orthobasis[j], orthobasis[j])
 
     k = 1
     while k < n:
         for j in range(k-1, -1, -1):
             if abs(mu[k][j]) > 1/2:
-                tempp = scalar_multiply(A[j], round(mu[k][j]))
-                A[k] = vector_subtraction(A[k], tempp)
-                B = gram_schmidt(A)
-                for i in range(k+1):
+                tempp = scalar_multiply(Basis[j], round(mu[k][j]))
+                Basis[k] = vector_subtraction(Basis[k], tempp)
+                orthobasis = gram_schmidt(Basis)
+                for i in range(j+1):
                     for p in range(len(mu[i])-1):
-                        mu[i][p] = inner_product(A[i], B[p])/inner_product(B[p], B[p])
-        if inner_product(B[k], B[k]) > (S-((mu[k][k-1]))**2)* inner_product(B[k-1], B[k-1]):
+                        mu[i][p] = inner_product(Basis[i], orthobasis[p])/inner_product(orthobasis[p], orthobasis[p])
+        if inner_product(orthobasis[k], orthobasis[k]) > (S-((mu[k][k-1]))**2)* inner_product(orthobasis[k-1], orthobasis[k-1]):
             k += 1
         else:
-            temp = A[k]
-            A[k] = A[k-1]
-            A[k-1] = temp
-            B = gram_schmidt(A)
-            for i in range(k+1):
-                for g in range(len(mu[i])-1):
-                    mu[i][g] = inner_product(A[i], B[g])/inner_product(B[g], B[g])
+            temp = Basis[k]
+            Basis[k] = Basis[k-1]
+            Basis[k-1] = temp
+            orthobasis = gram_schmidt(Basis)
+            mu = [[0 for _ in range(n)] for _ in range(n)]
+            for i in range(n):
+                mu[i][i] = 1
+                for j in range(i):
+                    mu[i][j] = inner_product(Basis[i], orthobasis[j]) / inner_product(orthobasis[j], orthobasis[j])
             k = max(k-1, 1)
 
-    return A
+    return Basis
 
 def svp(A, r):
     A_lll = LLL(A)
@@ -244,12 +248,6 @@ def schnorr_euchner(A, R):
                     v[k] += w[k]
                 w[k] += 1
 
-
-B = [[1, 2], [3, 1]]
-R = 5
-A = LLL(B)
-
-
 # Example usage
 #print("Shortest Vector in B2:", svp(A, R))
 
@@ -266,4 +264,4 @@ def gram_schmidt_A(A, normalize_vectors=True):
     
     return orthogonal_basis
 
-print(LLL([[3,1,1], [-1,2,4],[2,0,3]]))
+print(LLL([[1,2,2], [2,-1,1],[3,0,1]]))
