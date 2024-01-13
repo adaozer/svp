@@ -1,3 +1,5 @@
+from math import sqrt
+
 def inner_product(u, v):
     counter = 0
     for i in range(len(u)):
@@ -213,22 +215,23 @@ def schnorr_euchner(A, R):
     k = 0
     last_nonzero = 0
     R_squared = R**2
+    s = [A[0]]
 
     while True:
         p[k] = p[k+1] + (v[k] + c[k])**2 * B_inner[k]
         
-        if p[k] <= R_squared:
+        if p[k] < R_squared:
             if k == 0:
                 R_squared = p[k]
                 s = [0 for _ in range(len(A[0]))]
                 for i in range(n):
                     s = vector_add(scalar_multiply(A[i], v[i]), s)
-                return s
+                                
             else:
                 k -= 1
                 c[k] = 0
                 for i in range(k+1, n):
-                    c[k] += scalar_multiply(mu[i][k], v[i])
+                    c[k] += mu[i][k]*v[i]
                 c[k] *= -1
                 v[k] = round(c[k])
                 w[k] = 1
@@ -246,20 +249,18 @@ def schnorr_euchner(A, R):
                     v[k] += w[k]
                 w[k] += 1
 
-# Example usage
-#print("Shortest Vector in B2:", svp(A, R))
+# b =[[10065, 12998, 44792 ,62072, 11217, 55261, 28537 ,24895 ,2571, 36589], 
+#        [45043 ,42875 ,30803, 56368, 22736, 26965 ,1380 ,33122 ,22237, 63393], 
+#        [62798, 4623, 57736, 61641 ,31914, 1277, 55169 ,58431, 39209 ,37892], 
+#        [6342 ,41461 ,22542, 10930 ,61518, 48588 ,9671,60996 ,39242 ,20480], 
+#        [42437, 18405 ,22876, 1498 ,7588, 60991, 15287, 52907, 13647 ,26880] ,
+#        [64671 ,339 ,58683, 22013, 16657, 23765, 20562, 29093, 64268 ,48886] ,
+#        [55078, 341 ,32307, 59733, 44010, 51590, 44276, 9921, 18019, 27427] ,
+#        [63464 ,3511 ,27045, 8049 ,5175, 4273, 8729, 64217, 19359, 58196] ,
+#        [53616, 43081 ,33663 ,5201, 18965, 33442, 10541 ,56234 ,5237 ,36794],
+#          [52664 ,58203 ,43963, 32674 ,45058, 30711, 14511, 8528, 7604, 43079]]
 
-    
-def gram_schmidt_A(A, normalize_vectors=True):
-    orthogonal_basis = []
-    for v in A:
-        for u in orthogonal_basis:
-            proj = scalar_multiply(u, inner_product(v, u) / inner_product(u, u))
-            v = vector_subtraction(v, proj)
-        if normalize_vectors:
-            v = normalize(v)
-        orthogonal_basis.append(v)
-    
-    return orthogonal_basis
-
-print(LLL([[2,2,1], [4,3,1]]))
+b = [[2,3,1], [5,3,1], [3,4,1]]
+lll = LLL(b)
+r = sqrt(inner_product(b[0],b[0]))
+print(schnorr_euchner(lll, r))
