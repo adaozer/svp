@@ -1,5 +1,4 @@
-#include <iostream>
-#include "svp.h"
+#include "file_write.h"
 
 void print_vector(Vector v) {
     for (int i = 0; i < v.size(); ++i) {
@@ -31,6 +30,7 @@ int main(){
     Basis pre_process = LLL(A, 0.75);
     double r = pow(inner_product(A[0],A[0]), 0.5);
     Vector n = schnorr_euchner(pre_process, r);
-    print_vector(n);
+    double cevap = find_length(n);
+    write_to_file(cevap);
     return 0;
 }
