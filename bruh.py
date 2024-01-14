@@ -83,117 +83,6 @@ def LLL(Basis, S=3/4):
 
     return Basis
 
-def svp(A, r):
-    A_lll = LLL(A)
-    n = len(A_lll)
-    mu = [[0 for i in range(n)] for i in range(n)]
-    B = gram_schmidt(A_lll)
-    for i in range(n):
-        for j in range(len(mu[i])-1):
-            mu[i][j] = inner_product(A_lll[i], B[j])/inner_product(B[j], B[j])
-    
-    B_inner = []
-    for i in B:
-        B_inner.append(inner_product(i,i))
-  
-    p = [0] * (n+1)
-    v = [0] * n
-    c = [0] * n
-    w = [0] * n
-    v[0] = 1
-    k = 0
-    r_square = r**2
-    last_nonzero = 0
-    
-    while True:
-        p[k] = p[k+1] + (v[k] - c[k])**2 * B_inner[k]
-        if p[k] <= r_square:
-            if k == 0:
-                r_square = p[k]
-                s = scalar_multiply(A_lll[0], v[0])
-                for i in range(1,n):
-                    s += scalar_multiply(A_lll[i], v[i])
-                return s
-            else:
-                k -= 1
-                c[k] = 0
-                for i in range(k+1,n):
-                    c[k] += scalar_multiply(mu[i][k], v[i])
-                v[k] = round(c[k])
-                w[k] = 1
-        else:
-            k += 1
-            if k == n:
-                return s
-
-            if k >= last_nonzero:
-                last_nonzero = k
-                v[k] += 1
-
-            else:
-                if v[k] > c[k]:
-                    v[k] -= w[k]
-                else:
-                    v[k] += w[k] 
-                w[k] += 1
-
-
-
-def svp_A(A, r):
-    A_lll = LLL(A)
-    n = len(A_lll)
-    mu = [[0 for _ in range(n)] for _ in range(n)]
-    B = gram_schmidt(A_lll)
-    
-    for i in range(n):
-        for j in range(i):
-            mu[i][j] = inner_product(A_lll[i], B[j]) / inner_product(B[j], B[j])
-    
-    B_inner = [inner_product(b, b) for b in B]
-
-    p = [0] * (n + 1)
-    v = [0] * n
-    v[0] = 1
-    c = [0] * n
-    w = [0] * n
-    k = 0
-    r_square = r**2
-    last_nonzero = 0
-    s = None
-
-    while True:
-        p[k] = p[k + 1] + (v[k] - c[k])**2 * B_inner[k]
-        if p[k] <= r_square:
-            if k == 0:
-                r_square = p[k]
-                s = [0] * len(A_lll[0])
-                for i in range(n):
-                    s += scalar_multiply(A_lll[i], v[i])
-                return s  # Exit when the shortest vector is found
-
-            else:
-                k -= 1
-                c[k] = 0  # Reset c[k] for the current level
-                for i in range(k + 1, n):
-                    c[k] -= mu[i][k] * v[i]
-                v[k] = round(c[k])
-                w[k] = 1
-        else:
-            k += 1
-            if k == n:
-                if s is not None:
-                    return s  # Return the found shortest vector
-                k -= 1  # Step back if no vector found
-
-            if k > last_nonzero:
-                last_nonzero = k
-                v[k] = 1
-            else:
-                if v[k] > c[k]:
-                    v[k] -= w[k]
-                else:
-                    v[k] += w[k]
-                w[k] += 1
 
 def schnorr_euchner(A, R):
     B = gram_schmidt(A)
@@ -220,7 +109,7 @@ def schnorr_euchner(A, R):
     while True:
         p[k] = p[k+1] + (v[k] + c[k])**2 * B_inner[k]
         
-        if p[k] < R_squared:
+        if p[k] < R_squared: # Bu eşittirin amına koydum
             if k == 0:
                 R_squared = p[k]
                 s = [0 for _ in range(len(A[0]))]
@@ -249,18 +138,17 @@ def schnorr_euchner(A, R):
                     v[k] += w[k]
                 w[k] += 1
 
-# b =[[10065, 12998, 44792 ,62072, 11217, 55261, 28537 ,24895 ,2571, 36589], 
-#        [45043 ,42875 ,30803, 56368, 22736, 26965 ,1380 ,33122 ,22237, 63393], 
-#        [62798, 4623, 57736, 61641 ,31914, 1277, 55169 ,58431, 39209 ,37892], 
-#        [6342 ,41461 ,22542, 10930 ,61518, 48588 ,9671,60996 ,39242 ,20480], 
-#        [42437, 18405 ,22876, 1498 ,7588, 60991, 15287, 52907, 13647 ,26880] ,
-#        [64671 ,339 ,58683, 22013, 16657, 23765, 20562, 29093, 64268 ,48886] ,
-#        [55078, 341 ,32307, 59733, 44010, 51590, 44276, 9921, 18019, 27427] ,
-#        [63464 ,3511 ,27045, 8049 ,5175, 4273, 8729, 64217, 19359, 58196] ,
-#        [53616, 43081 ,33663 ,5201, 18965, 33442, 10541 ,56234 ,5237 ,36794],
-#          [52664 ,58203 ,43963, 32674 ,45058, 30711, 14511, 8528, 7604, 43079]]
+b =[[10065, 12998, 44792 ,62072, 11217, 55261, 28537 ,24895 ,2571, 36589], 
+        [45043 ,42875 ,30803, 56368, 22736, 26965 ,1380 ,33122 ,22237, 63393], 
+        [62798, 4623, 57736, 61641 ,31914, 1277, 55169 ,58431, 39209 ,37892], 
+        [6342 ,41461 ,22542, 10930 ,61518, 48588 ,9671,60996 ,39242 ,20480], 
+        [42437, 18405 ,22876, 1498 ,7588, 60991, 15287, 52907, 13647 ,26880] ,
+        [64671 ,339 ,58683, 22013, 16657, 23765, 20562, 29093, 64268 ,48886] ,
+        [55078, 341 ,32307, 59733, 44010, 51590, 44276, 9921, 18019, 27427] ,
+        [63464 ,3511 ,27045, 8049 ,5175, 4273, 8729, 64217, 19359, 58196] ,
+        [53616, 43081 ,33663 ,5201, 18965, 33442, 10541 ,56234 ,5237 ,36794],
+          [52664 ,58203 ,43963, 32674 ,45058, 30711, 14511, 8528, 7604, 43079]]
 
-b = [[2,3,1], [5,3,1], [3,4,1]]
 lll = LLL(b)
 r = sqrt(inner_product(b[0],b[0]))
 print(schnorr_euchner(lll, r))
