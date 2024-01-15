@@ -14,9 +14,9 @@ int main(int argc, char* argv[]) {
         cout << "Wrong input\nThere must be at least 2 vectors in the basis\n";
     }
     Basis B = LLL(A);  // Calculate LLL of the basis
-    if (B.empty()) { // Check linear dependence
+    if (B.empty()) {  // Check linear dependence
         cout << "Linearly dependent vectors\n";
-        return 1; // Exit with error
+        return 1;  // Exit with error
     }
     double r = pow(inner_product(B[0], B[0]), 0.5);  // Find radius of lattice
     Vector C = schnorr_euchner(B, r);  // Calculate the svp
