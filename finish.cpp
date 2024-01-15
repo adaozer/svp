@@ -1,5 +1,4 @@
 #include "finish.h"
-#include <stdexcept>
 
 double find_length(Vector u) {  // Function finding the length of a vector u
     double result = 0;  // Initialise result variable to zero to be returned

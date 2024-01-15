@@ -1,5 +1,6 @@
 #include <fstream>  // fstream for writing to file
 #include <algorithm> 
+#include <stdexcept>  // stdexcept for handling exceptions
 #include <string>  // String and algorithm for turning arguments to parameters
 #include "svp.h"  // Import the previous functions for use.
 
