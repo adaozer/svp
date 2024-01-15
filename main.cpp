@@ -10,10 +10,14 @@ int main(int argc, char* argv[]) {
     if (A.empty()) {
         cout << "Wrong input format.\nCorrect format: [x y z] [a b c]...\n";
         return 1;  // Exit with error if wrong input format
-    } else if (A.size() == 1) { // Check the amount of vectors in basis
+    } else if (A.size() == 1) {  // Check the amount of vectors
         cout << "Wrong input\nThere must be at least 2 vectors in the basis\n";
     }
     Basis B = LLL(A);  // Calculate LLL of the basis
+    if (B.empty()) { // Check linear dependence
+        cout << "Linearly dependent vectors\n";
+        return 1; // Exit with error
+    }
     double r = pow(inner_product(B[0], B[0]), 0.5);  // Find radius of lattice
     Vector C = schnorr_euchner(B, r);  // Calculate the svp
     double n = find_length(C);  // Find the length of the shortest vector

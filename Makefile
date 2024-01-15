@@ -25,4 +25,3 @@ test:
 	    	echo "Test failed"; \
 		fi
 		@make clean
-	

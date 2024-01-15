@@ -9,23 +9,42 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
         while (counter < i) {
             double hat_top = inner_product(A[i], B[counter]);
             double hat_bottom = inner_product(B[counter], B[counter]);
+            if (hat_bottom > 0.000001) {
             Vector hat_final = scalar_multiply(B[counter], hat_top/hat_bottom);
             // Calculate projection vectors
             hats.push_back(hat_final);  // Push projections to basis
             counter++;  // Progress the loop after vectors are calculated.
+            } else { // Check for division by 0
+                Basis fail;
+                return fail; // Return empty basis
+            }
         }
         Vector result = A[i];  // Initialise result for the projection vectors.
         for (int z = 0; z < hats.size(); ++z) {
             result = vector_subtraction(result, hats[z]);
             // Parse hats basis and subtract vectors from each other.
         }
+        bool add = false; // Check for all 0 vector
+        for (int i = 0; i < result.size(); ++i) {
+            if (result[i] > 0.000001) {
+                add = true;
+            }
+        }
+        if (add) {
         B.push_back(result);  // Put the resulting vector in the orthobasis.
+        } else { // Check for all 0 vector
+            Basis fail;
+            return fail;
+        }
     }
     return B;  // Return the orthobasis.
 }
 
 Basis LLL(Basis A, double S) {  // LLL function returning LLL-reduced basis
     Basis B = gram_schmidt(A);  // Find the orthobasis of the basis
+    if (B.empty()) { // Check for exception
+        return B;
+    }
     int n = B.size();  // Initialise a size variable
     Basis mu(n, Vector(n, 0));  // Create the mu matrix
     for (int i = 0; i < n; ++i) {  // Fill in the mu matrix
