@@ -1,46 +1,5 @@
-#include "svp.h"
+#include "finish.h"
 #include <iostream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-
-Basis parseArguments(int argc, char* argv[]) {
-    Basis lattice;
-    string combArg;
-    bool isCombining = false;
-
-    for (int i = 1; i < argc; ++i) {
-        string arg = argv[i];
-
-        if (arg.front() == '[') {
-            combArg = arg;
-            isCombining = true;
-        } else if (arg.back() == ']') {
-            combArg += " " + arg;
-            isCombining = false;
-
-            auto rem_start = remove(combArg.begin(), combArg.end(), '[');
-            combArg.erase(rem_start, combArg.end());
-
-            auto rem_end = remove(combArg.begin(), combArg.end(), ']');
-            combArg.erase(rem_end, combArg.end());
-
-            istringstream ss(combArg);
-            Vector latticeVector;
-            double value;
-            while (ss >> value) {
-                latticeVector.push_back(value);
-            }
-
-            lattice.push_back(latticeVector);
-            combArg.clear();
-        } else if (isCombining) {
-            combArg += " " + arg;
-        }
-    }
-
-    return lattice;
-    }
 
 int main(int argc, char* argv[]) {
     if (argc < 3) {

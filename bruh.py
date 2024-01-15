@@ -145,7 +145,7 @@ def find_length(v):
     
     return sqrt(result)
 
-b = [[2,2,1], [4,4,2], [8,8,4]]
+b = [[44.1, 50.99] ,[220.0, 44.0]]
 
 lll = LLL(b)
 r = sqrt(inner_product(b[0],b[0]))
