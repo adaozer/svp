@@ -3,7 +3,7 @@
 Vector schnorr_euchner(Basis A, double r) {
     Basis B = gram_schmidt(A);
     int n = A.size();
-    Basis mu(n, Vector(n,0));
+    Basis mu(n, Vector(n, 0));
     Vector B_inner;
     Vector p(n + 1, 0);
     Vector v(n, 0);
@@ -17,20 +17,20 @@ Vector schnorr_euchner(Basis A, double r) {
     for (int i=0; i < B.size(); ++i) {
         B_inner.push_back(inner_product(B[i], B[i]));
     }
-    for (int i = 0; i < n; ++i){
+    for (int i = 0; i < n; ++i) {
         for (int j = 0; j < mu[i].size(); ++j) {
             mu[i][j] = inner_product(A[i], B[j])/inner_product(B[j], B[j]);
         }
     }
 
     while (1) {
-        p[k] = p[k+1] + pow((v[k] + c[k]),2) * B_inner[k];
+        p[k] = p[k+1] + pow((v[k] + c[k]), 2) * B_inner[k];
 
         if (p[k] < R_squared) {
-            if (k==0) {
+            if (k == 0) {
                 R_squared = p[k];
                 s = Vector(A[0].size(), 0);
-                for(int i = 0; i < n; ++i) {
+                for (int i = 0; i < n; ++i) {
                     s = vector_add(scalar_multiply(A[i], v[i]), s);
                 }
             } else {
@@ -43,12 +43,11 @@ Vector schnorr_euchner(Basis A, double r) {
                 v[k] = round(c[k]);
                 w[k] = 1;
             }
-        
         } else {
             ++k;
-            if (k==n) {
+            if (k == n) {
                 return s;
-            } 
+            }
             if (k >= last_nonzero) {
                 last_nonzero = k;
                 ++v[k];
@@ -59,7 +58,7 @@ Vector schnorr_euchner(Basis A, double r) {
                     v[k] = v[k] + w[k];
                 }
                 ++w[k];
-            } 
+            }
         }
     }
 }
@@ -67,17 +66,13 @@ Vector schnorr_euchner(Basis A, double r) {
 double find_length(Vector u) {
     double result = 0;
     for (int i = 0; i < u.size(); ++i) {
-        result = result + pow(u[i],2);
+        result = result + pow(u[i], 2);
     }
     return pow(result, 0.5);
 }
 
 void write_to_file(double n) {
-
   ofstream result_file("result.txt");
-
   result_file << n;
-
   result_file.close();
-  
 }
