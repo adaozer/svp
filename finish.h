@@ -1,5 +1,6 @@
 #include <fstream>
 #include <algorithm>
+#include <string>
 #include "svp.h"
 
 double find_length(Vector u);

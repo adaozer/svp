@@ -15,9 +15,9 @@ void write_to_file(double n) {
 }
 
 Basis parseArguments(int argc, char* argv[]) {
-   Basis basis;
-   Vector vec;
-   for (int i = 1; i < argc; ++i) {
+    Basis basis;
+    Vector vec;
+    for (int i = 1; i < argc; ++i) {
     string arg = argv[i];
     if (arg[0] == '[') {
         arg.erase(remove(arg.begin(), arg.end(), '['), arg.end());

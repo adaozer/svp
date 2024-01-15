@@ -16,12 +16,13 @@ vector_functions.o: vector_functions.cpp vector_functions.h
 clean:
 		rm -rf runme result.txt finish.o svp.o pre_process.o vector_functions.o
 
-test:
-	make all
-	./runme [1.0 2.0 3.0] [2.0 3.0 1.0] [4.0 4.0 4.0]
-	make clean
-		
-		
-		
-		
-		
+test:	
+		make all
+		./runme [1.0 2.0] [2.0 2.0]
+		if [ "`cat result.txt`" = "1" ]; then \
+	    	echo "Test passed"; \
+		else \
+	    	echo "Test failed"; \
+		fi
+		make clean
+	
