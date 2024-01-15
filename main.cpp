@@ -1,36 +1,55 @@
-#include "file_write.h"
+#include "svp.h"
+#include <sstream>
+#include <string>
+#include <algorithm>
 
-void print_vector(Vector v) {
-    for (int i = 0; i < v.size(); ++i) {
-        cout << v[i] << " ";
-    }
-    cout << "\n";
-}
+Basis parseArguments(int argc, char* argv[]) {
+    Basis lattice;
+    string combinedArg;
+    bool isCombining = false;
 
-void print_matrix(Basis mat){
-    for (const auto& row : mat) {
-        for (auto elem : row) {
-            cout << elem << ' ';
+    for (int i = 1; i < argc; ++i) {
+        string arg = argv[i];
+
+        if (arg.front() == '[') {
+            combinedArg = arg;
+            isCombining = true;
+        } else if (arg.back() == ']') {
+            combinedArg += " " + arg;
+            isCombining = false;
+
+            combinedArg.erase(remove(combinedArg.begin(), combinedArg.end(), '['), combinedArg.end());
+            combinedArg.erase(remove(combinedArg.begin(), combinedArg.end(), ']'), combinedArg.end());
+
+            istringstream ss(combinedArg);
+            Vector latticeVector;
+            double value;
+            while (ss >> value) {
+                latticeVector.push_back(value);
+            }
+
+            lattice.push_back(latticeVector);
+            combinedArg.clear();
+        } else if (isCombining) {
+            combinedArg += " " + arg;
         }
-        cout << '\n';
     }
+
+    return lattice;
 }
 
-int main(){
-    Basis A ={{10065, 12998, 44792 ,62072, 11217, 55261, 28537 ,24895 ,2571, 36589}, 
-        {45043 ,42875 ,30803, 56368, 22736, 26965 ,1380 ,33122 ,22237, 63393}, 
-        {62798, 4623, 57736, 61641 ,31914, 1277, 55169 ,58431, 39209 ,37892}, 
-        {6342 ,41461 ,22542, 10930 ,61518, 48588 ,9671,60996 ,39242 ,20480}, 
-        {42437, 18405 ,22876, 1498 ,7588, 60991, 15287, 52907, 13647 ,26880} ,
-        {64671 ,339 ,58683, 22013, 16657, 23765, 20562, 29093, 64268 ,48886} ,
-        {55078, 341 ,32307, 59733, 44010, 51590, 44276, 9921, 18019, 27427} ,
-        {63464 ,3511 ,27045, 8049 ,5175, 4273, 8729, 64217, 19359, 58196} ,
-        {53616, 43081 ,33663 ,5201, 18965, 33442, 10541 ,56234 ,5237 ,36794},
-          {52664 ,58203 ,43963, 32674 ,45058, 30711, 14511, 8528, 7604, 43079}};
-    Basis pre_process = LLL(A, 0.75);
+int main(int argc, char* argv[]){
+
+    if (argc < 3) {
+        cout << "Wrong input \n";
+        return 1;
+    } else {
+    Basis A = parseArguments(argc, argv);
+    A = LLL(A);
     double r = pow(inner_product(A[0],A[0]), 0.5);
-    Vector n = schnorr_euchner(pre_process, r);
-    double cevap = find_length(n);
-    write_to_file(cevap);
+    Vector B = schnorr_euchner(A, r);
+    double n = find_length(B);
+    write_to_file(n);
     return 0;
-}
+    }
+    }

@@ -1,6 +1,6 @@
 #include "pre_process.h"
 
-Basis gram_schmidt(const Basis A){
+Basis gram_schmidt(Basis A){
     Basis B;
     B.push_back(A[0]);
 
@@ -10,11 +10,13 @@ Basis gram_schmidt(const Basis A){
         while (counter < i) {
             double hat_top = inner_product(A[i], B[counter]);
             double hat_bottom = inner_product(B[counter], B[counter]);
-            if (hat_bottom != 0){
+            if (hat_bottom!=0){
             Vector hat_final = scalar_multiply(B[counter], hat_top/hat_bottom);
             hats.push_back(hat_final);
-            }
             counter++;
+            } else{
+                i++;
+            }
         } 
         Vector result = A[i];
         for (int z = 0; z < hats.size(); ++z) {
@@ -25,10 +27,10 @@ Basis gram_schmidt(const Basis A){
     return B;
 }
 
-Basis LLL(Basis A, const double S) {
+Basis LLL(Basis A, double S) {
     Basis B = gram_schmidt(A);
     int n = B.size();
-    Basis mu(n, Vector(n,0)); // Bu ne aw
+    Basis mu(n, Vector(n,0));
     for (int i = 0; i < n; ++i){
         for (int j = 0; j < mu[i].size(); ++j) {
             mu[i][j] = inner_product(A[i], B[j])/inner_product(B[j], B[j]);

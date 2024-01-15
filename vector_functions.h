@@ -3,8 +3,8 @@
 using namespace std;
 using Vector = vector<double>;
 
-double inner_product(const Vector u, const Vector v);
-Vector scalar_multiply(const Vector u, const double scalar);
-Vector vector_subtraction(const Vector u, const Vector v);
-Vector vector_add(const Vector u, const Vector v);
+double inner_product(Vector u, Vector v);
+Vector scalar_multiply( Vector u, double scalar);
+Vector vector_subtraction( Vector u, Vector v);
+Vector vector_add(Vector u, Vector v);
 

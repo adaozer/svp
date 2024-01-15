@@ -1,6 +1,6 @@
 #include "vector_functions.h"
 
-double inner_product(const Vector u, const Vector v){
+double inner_product(Vector u, Vector v){
 
     double counter = 0;
     for (int i = 0; i<u.size(); ++i){
@@ -9,7 +9,7 @@ double inner_product(const Vector u, const Vector v){
     return counter;
     }
 
-Vector scalar_multiply(const Vector u, const double scalar) {
+Vector scalar_multiply(Vector u, double scalar) {
     
     Vector result;
     for (int i = 0; i < u.size(); ++i) {
@@ -18,7 +18,7 @@ Vector scalar_multiply(const Vector u, const double scalar) {
     return result;
 }
 
-Vector vector_subtraction(const Vector u, const Vector v) {
+Vector vector_subtraction(Vector u, Vector v) {
     Vector result;
     for (int i = 0; i < u.size(); ++i) {
         result.push_back(u[i]-v[i]);
@@ -26,7 +26,7 @@ Vector vector_subtraction(const Vector u, const Vector v) {
     return result;
 }
 
-Vector vector_add(const Vector u, const Vector v) {
+Vector vector_add(Vector u, Vector v) {
     Vector result;
     for (int i = 0; i < u.size(); ++i) {
         result.push_back(u[i]+v[i]);

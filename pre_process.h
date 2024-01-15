@@ -3,5 +3,5 @@
 
 using Basis = vector<Vector>;
 
-Basis gram_schmidt(const Basis A); 
-Basis LLL(Basis A, const double S);
+Basis gram_schmidt(Basis A); 
+Basis LLL(Basis A, double S=0.75);
