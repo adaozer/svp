@@ -14,9 +14,9 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
             // Calculate projection vectors
             hats.push_back(hat_final);  // Push projections to basis
             counter++;  // Progress the loop after vectors are calculated.
-            } else { // Check for division by 0
+            } else {  // Check for division by 0
                 Basis fail;
-                return fail; // Return empty basis
+                return fail;  // Return empty basis
             }
         }
         Vector result = A[i];  // Initialise result for the projection vectors.
@@ -24,7 +24,7 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
             result = vector_subtraction(result, hats[z]);
             // Parse hats basis and subtract vectors from each other.
         }
-        bool add = false; // Check for all 0 vector
+        bool add = false;  // Check for all 0 vector
         for (int i = 0; i < result.size(); ++i) {
             if (result[i] > 0.000001) {
                 add = true;
@@ -32,7 +32,7 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
         }
         if (add) {
         B.push_back(result);  // Put the resulting vector in the orthobasis.
-        } else { // Check for all 0 vector
+        } else {  // Check for all 0 vector
             Basis fail;
             return fail;
         }
@@ -42,7 +42,7 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
 
 Basis LLL(Basis A, double S) {  // LLL function returning LLL-reduced basis
     Basis B = gram_schmidt(A);  // Find the orthobasis of the basis
-    if (B.empty()) { // Check for exception
+    if (B.empty()) {  // Check for exception
         return B;
     }
     int n = B.size();  // Initialise a size variable
