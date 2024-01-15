@@ -54,6 +54,7 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "fstream": "cpp",
-        "xlocmes": "cpp"
+        "xlocmes": "cpp",
+        "xstring": "cpp"
     }
 }

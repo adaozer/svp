@@ -1,33 +1,33 @@
-#include "vector_functions.h" // Import header
+#include "vector_functions.h"  // Import header
 
-double inner_product(Vector u, Vector v) { // Function for finding the inner product of 2 vectors, taking 2 vectors as the parameter.
-    double counter = 0; // Initialise a counter; this is what we will be returning as the result.
+double inner_product(Vector u, Vector v) {  // Inner product function
+    double counter = 0;  // Initialise a counter to return
     for (int i = 0; i < u.size(); ++i) {
-        counter += u[i]*v[i]; // Add the product of each vector dimension to the counter variable.
+        counter += u[i]*v[i];  // Add product of dimension to counter
     }
     return counter;
     }
 
-Vector scalar_multiply(Vector u, double scalar) { // Function for multiplying a vector with a scalar, taking in a vector and a scalar to multiply as the parameter.
-    Vector result; // Initialise a vector, this will be what we will be returning as the final vector.
+Vector scalar_multiply(Vector u, double scalar) {  // Vector times scalar
+    Vector result;  // Initialise a vector to return
     for (int i = 0; i < u.size(); ++i) {
-        result.push_back(u[i] * scalar); // Times each dimensions of the input vector with the input scalar. Push the result onto the new result vector.
+        result.push_back(u[i] * scalar);  // Add dimension * scalar to result
     }
     return result;
 }
 
-Vector vector_subtraction(Vector u, Vector v) { // Vector Subtraction function taking 2 vectors to subtract as the parameter.
-    Vector result; // Initialise vector which we will be returning as the final vector.
+Vector vector_subtraction(Vector u, Vector v) {  // Vector Subtraction function
+    Vector result;  // Initialise vector to return
     for (int i = 0; i < u.size(); ++i) {
-        result.push_back(u[i]-v[i]); // Subtract each dimension of the 2 vectors, and push the final answer onto the result vector.
+        result.push_back(u[i]-v[i]);  // Add dimension - dimension to result
     }
     return result;
 }
 
-Vector vector_add(Vector u, Vector v) { // Vector addition function taking 2 vectors to add as the parameter.
-    Vector result; // Initialise result vector to push the added dimensions into.
+Vector vector_add(Vector u, Vector v) {  // Vector addition function
+    Vector result;  // Initialise result vector to return
     for (int i = 0; i < u.size(); ++i) {
-        result.push_back(u[i]+v[i]); // Add each dimension of the 2 vectors and push them onto result to return.
+        result.push_back(u[i]+v[i]);  // Add dimension + dimension to result
     }
     return result;
 }
