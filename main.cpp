@@ -22,5 +22,5 @@ int main(int argc, char* argv[]) {
     Vector C = schnorr_euchner(B, r);  // Calculate the svp
     double n = find_length(C);  // Find the length of the shortest vector
     write_to_file(n);  // Write it onto a file
-    return 0;  // Exit successfully
+    return 0;  // Successful exit
     }

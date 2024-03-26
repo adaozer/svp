@@ -15,7 +15,7 @@ Basis gram_schmidt(Basis A) {  // Gram schmidt function for finding orthobasis
             hats.push_back(hat_final);  // Push projections to basis
             counter++;  // Progress the loop after vectors are calculated.
             } else {  // Check for division by 0
-                Basis fail;
+                Basis fail; // Create empty basis
                 return fail;  // Return empty basis
             }
         }
